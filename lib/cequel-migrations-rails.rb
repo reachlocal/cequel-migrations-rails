@@ -1,4 +1,5 @@
 require "cequel-migrations-rails/version"
+require "cequel/migration"
 
 module Cequel
   module Migrations
