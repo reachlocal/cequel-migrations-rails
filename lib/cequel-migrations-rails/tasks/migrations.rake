@@ -11,7 +11,7 @@ namespace :cequel do
     db = CassandraCQL::Database.new(cequel_env_conf['host'])
     db.execute("CREATE KEYSPACE #{cequel_env_conf['keyspace']} WITH strategy_class = 'SimpleStrategy' AND strategy_options:replication_factor = 1")
     db.execute("USE #{cequel_env_conf['keyspace']}")
-    db.execute("CREATE COLUMNFAMILY schema_migrations (version int PRIMARY KEY, migrated_at timestamp)")
+    db.execute("CREATE COLUMNFAMILY schema_migrations (version bigint PRIMARY KEY, migrated_at timestamp)")
   end
 
   desc "Drop the cequel specified cassandra keystore for the current environment"
@@ -52,7 +52,6 @@ namespace :cequel do
     db.execute("USE #{cequel_env_conf['keyspace']}")
 
     # Create the migrator
-    require 'shearwater/cassandra_cql_backend'
     backend = Shearwater::CassandraCqlBackend.new(db)
     migrations_directory = ::Rails.root.join('cequel', 'migrate')
     migrator = Shearwater::Migrator.new(migrations_directory, backend)
