@@ -45,13 +45,13 @@ with the following command where `<migration_name>` is replaced with the name
 of the migration.
 
 ```
-rails g cequel:migrations:migration <migration_name>
+rails g cequel:migration <migration_name>
 ```
 
 An example of the above command with a migration name would look as follows:
 
 ```
-rails g cequel:migrations:migration CreateUserColumnFamily
+rails g cequel:migration CreateUserColumnFamily
 ```
 
 ### Create Database
