@@ -102,14 +102,13 @@ STEPS=5 rake cequel:rollback
 When you generate a migration you may know that it sets up the migration class
 with a base class of `Cequel::Migration`.
 
-Currently this is just a stub class that adds no additional functionality.
-However, the plan is that the `Cequel::Migration` class will handle connecting
-to the database as well as provide some easy to use methods to help write
-migrations. I am currently thinking things like, `create_column_family`,
-`drop_column_family`, etc.
+The `Cequel::Migration` class provides the `execute` method to be used inside
+of your migrations `up` and `down` methods. The `execute` method takes a
+string of CQL.
 
-Until the above is done you will have to manage making your own connection
-appropriately and writing executes of CQL to do your migrations.
+At the moment we currently only provide the `execute` method. However, we plan
+to provide other helper functions like, `create_column_family`,
+`drop_column_family`, etc.
 
 ## Contributing
 
