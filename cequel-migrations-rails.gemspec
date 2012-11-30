@@ -8,12 +8,15 @@ Gem::Specification.new do |gem|
   gem.version       = Cequel::Migrations::Rails::VERSION
   gem.authors       = ["Andrew De Ponte"]
   gem.email         = ["cyphactor@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Cequel migration support for Rails.}
+  gem.summary       = %q{A Rails plugin that provides migration support for Cequel.}
+  gem.homepage      = "http://github.com/cyphactor/cequel-migrations-rails"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_dependency('shearwater')
+  gem.add_development_dependency('rspec')
 end
