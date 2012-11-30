@@ -1,3 +1,5 @@
+require "cassandra-cql"
+
 require "cequel-migrations-rails/version"
 require "cequel/migration"
 
