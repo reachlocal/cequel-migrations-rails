@@ -3,7 +3,11 @@ require "cequel-migrations-rails/version"
 module Cequel
   module Migrations
     module Rails
-      # Your code goes here...
+      class Railtie < ::Rails::Railtie
+        rake_tasks do
+          load "cequel-migrations-rails/tasks/migrations.rake"
+        end
+      end
     end
   end
 end
