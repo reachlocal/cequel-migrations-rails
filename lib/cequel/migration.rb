@@ -3,8 +3,7 @@ module Cequel
     attr_reader :db
 
     def initialize
-      @db = CassandraCQL::Database.new(self.class.cequel_env_conf['host'])
-      @db.execute("USE #{self.class.cequel_env_conf['keyspace']}")
+      @db = CassandraCQL::Database.new(self.class.cequel_env_conf['host'], { :keyspace => self.class.cequel_env_conf['keyspace'] })
     end
 
     def execute(cql_string)

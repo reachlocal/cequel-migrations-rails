@@ -5,9 +5,9 @@ describe Cequel::Migration do
   let(:migration) { migration_class.new }
 
   describe "#new" do
-    it "create a cassandra-cql database connection for the host specified in the environment's config" do
-      migration_class.stub(:cequel_env_conf).and_return({ 'host' => 'somehost' })
-      CassandraCQL::Database.should_receive(:new).with('somehost').and_return(stub('db', :execute => nil))
+    it "create a cassandra-cql database connection for the host & keyspace specified in the environment's config" do
+      migration_class.stub(:cequel_env_conf).and_return({ 'host' => 'somehost', 'keyspace' => 'somekeyspace' })
+      CassandraCQL::Database.should_receive(:new).with('somehost', { :keyspace => 'somekeyspace' })
       migration
     end
 
