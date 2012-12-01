@@ -10,14 +10,6 @@ describe Cequel::Migration do
       CassandraCQL::Database.should_receive(:new).with('somehost', { :keyspace => 'somekeyspace' })
       migration
     end
-
-    it "use the keyspace specified in the environment's config" do
-      migration_class.stub(:cequel_env_conf).and_return({ 'host' => 'somehost', 'keyspace' => 'somekeyspace' })
-      db = mock('db')
-      CassandraCQL::Database.stub(:new).and_return(db)
-      db.should_receive(:execute).with("USE somekeyspace") 
-      migration
-    end
   end
   
   describe "#execute" do
