@@ -9,7 +9,7 @@ for Cassandra data stores using Cequel.
 
 Add this line to your application's Gemfile:
 
-    gem 'cequel-migrations-rails'
+    gem 'cequel-migrations-rails', :group => :development
 
 And then execute:
 
