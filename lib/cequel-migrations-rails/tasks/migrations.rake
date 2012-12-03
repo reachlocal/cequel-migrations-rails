@@ -61,4 +61,12 @@ namespace :cequel do
     # Migrate
     migrator.rollback(steps.to_i)
   end
+
+  desc "Drop the keystore, recreate it and run the migrations"
+  task :reset  do
+    Rake::Task["cequel:drop"].invoke
+    Rake::Task["cequel:create"].invoke
+    Rake::Task["cequel:migrate"].invoke
+  end
+  
 end
