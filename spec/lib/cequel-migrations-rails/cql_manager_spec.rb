@@ -59,10 +59,4 @@ describe Cequel::Migrations::Rails::CqlManager do
       subject.drop_keyspace
     end
   end
-
-  describe "#rollback" do
-    it "pending" do
-      pending
-    end
-  end
 end
