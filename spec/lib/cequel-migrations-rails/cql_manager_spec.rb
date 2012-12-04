@@ -40,6 +40,16 @@ describe Cequel::Migrations::Rails::CqlManager do
     end
   end
 
+  describe "#use_keyspace" do
+    it "send the cql command to use the keyspace from the cequel.yml" do
+      Cequel::Migrations::Rails::CqlManager.stub(:cequel_env_conf).and_return({ 'host' => 'some host', 'keyspace' => 'my_keyspace' })
+      db = mock('db')
+      CassandraCQL::Database.stub(:new).and_return(db)
+      db.should_receive(:execute).with('USE my_keyspace')
+      subject.use_keyspace
+    end
+  end
+
   describe "#drop_keyspace" do
     it "pending" do
       pending

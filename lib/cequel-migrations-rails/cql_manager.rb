@@ -16,6 +16,10 @@ module Cequel
           db.execute(build_create_keyspace_cmd(self.class.cequel_env_conf['keyspace'], self.class.cequel_env_conf['strategy_class'], self.class.cequel_env_conf['strategy_options']))
         end
 
+        def use_keyspace
+          db.execute("USE #{self.class.cequel_env_conf['keyspace']}")
+        end
+
         private
 
         def build_create_keyspace_cmd(keyspace_name, strategy_class_name, strategy_options)

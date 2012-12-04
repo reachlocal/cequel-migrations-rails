@@ -5,9 +5,8 @@ namespace :cequel do
   desc "Create the cequel specified cassandra keystore for the current environment"
   task :create => :environment do
     cql_manager = Cequel::Migrations::Rails::CqlManager.new
-    cql_manager.create_keyspace()
-
-    cql_manager.db.execute("USE #{cql_manager.class.cequel_env_conf['keyspace']}")
+    cql_manager.create_keyspace
+    cql_manager.use_keyspace
     cql_manager.db.execute("CREATE COLUMNFAMILY schema_migrations (version bigint PRIMARY KEY, migrated_at timestamp)")
   end
 
