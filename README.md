@@ -63,6 +63,21 @@ column family in it called `schema_migrations` run the following command:
 rake cequel:create
 ```
 
+#### Strategy & Strategy Options
+
+Before `cequel:create` will work the `strategy_class` and any
+`strategy_options` need to be set per environment in the `config/cequel.yml`
+config as seen in the example below.
+
+```
+development:
+  host: '127.0.0.1:9160'
+  keyspace: capture_api_dev
+  strategy_class: SimpleStrategy
+  strategy_options:
+    replication_factor: 1
+```
+
 ### Drop Database
 
 If you have already created the database and you want to drop it to start from

@@ -1,6 +1,7 @@
 require "cassandra-cql"
 
 require "cequel-migrations-rails/version"
+require "cequel-migrations-rails/keyspace_manager"
 require "cequel/migration"
 
 module Cequel

@@ -4,37 +4,25 @@ require 'shearwater/cassandra_cql_backend'
 namespace :cequel do
   desc "Create the cequel specified cassandra keystore for the current environment"
   task :create => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("CREATE KEYSPACE #{cequel_env_conf['keyspace']} WITH strategy_class = 'SimpleStrategy' AND strategy_options:replication_factor = 1")
-    db.execute("USE #{cequel_env_conf['keyspace']}")
-    db.execute("CREATE COLUMNFAMILY schema_migrations (version bigint PRIMARY KEY, migrated_at timestamp)")
+    keyspace_manager = Cequel::Migrations::Rails::KeyspaceManager.new
+    keyspace_manager.create_keyspace
+    keyspace_manager.use_keyspace
+    keyspace_manager.db.execute("CREATE COLUMNFAMILY schema_migrations (version bigint PRIMARY KEY, migrated_at timestamp)")
   end
 
   desc "Drop the cequel specified cassandra keystore for the current environment"
   task :drop => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("DROP KEYSPACE #{cequel_env_conf['keyspace']}")
+    keyspace_manager = Cequel::Migrations::Rails::KeyspaceManager.new
+    keyspace_manager.drop_keyspace
   end
 
   desc "Migrate the cassandra store"
   task :migrate => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("USE #{cequel_env_conf['keyspace']}")
+    keyspace_manager = Cequel::Migrations::Rails::KeyspaceManager.new
+    keyspace_manager.use_keyspace
 
     # Create the migrator
-    backend = Shearwater::CassandraCqlBackend.new(db)
+    backend = Shearwater::CassandraCqlBackend.new(keyspace_manager.db)
     migrations_directory = ::Rails.root.join('cequel', 'migrate')
     migrator = Shearwater::Migrator.new(migrations_directory, backend)
 
@@ -44,15 +32,11 @@ namespace :cequel do
 
   desc "Rollback to the previous migration version by 1 step"
   task :rollback => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("USE #{cequel_env_conf['keyspace']}")
+    keyspace_manager = Cequel::Migrations::Rails::KeyspaceManager.new
+    keyspace_manager.use_keyspace
 
     # Create the migrator
-    backend = Shearwater::CassandraCqlBackend.new(db)
+    backend = Shearwater::CassandraCqlBackend.new(keyspace_manager.db)
     migrations_directory = ::Rails.root.join('cequel', 'migrate')
     migrator = Shearwater::Migrator.new(migrations_directory, backend)
 
@@ -68,5 +52,4 @@ namespace :cequel do
     Rake::Task["cequel:create"].invoke
     Rake::Task["cequel:migrate"].invoke
   end
-  
 end
