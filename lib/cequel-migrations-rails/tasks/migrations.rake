@@ -32,15 +32,11 @@ namespace :cequel do
 
   desc "Rollback to the previous migration version by 1 step"
   task :rollback => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("USE #{cequel_env_conf['keyspace']}")
+    cql_manager = Cequel::Migrations::Rails::CqlManager.new
+    cql_manager.use_keyspace
 
     # Create the migrator
-    backend = Shearwater::CassandraCqlBackend.new(db)
+    backend = Shearwater::CassandraCqlBackend.new(cql_manager.db)
     migrations_directory = ::Rails.root.join('cequel', 'migrate')
     migrator = Shearwater::Migrator.new(migrations_directory, backend)
 
@@ -56,5 +52,4 @@ namespace :cequel do
     Rake::Task["cequel:create"].invoke
     Rake::Task["cequel:migrate"].invoke
   end
-  
 end
