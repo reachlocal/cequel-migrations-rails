@@ -12,12 +12,8 @@ namespace :cequel do
 
   desc "Drop the cequel specified cassandra keystore for the current environment"
   task :drop => :environment do
-    # Read in the cequel config for the current Rails environment
-    cequel_env_conf = YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[Rails.env]
-
-    # Create a CQL connection to use as the migrations backend.
-    db = CassandraCQL::Database.new(cequel_env_conf['host'])
-    db.execute("DROP KEYSPACE #{cequel_env_conf['keyspace']}")
+    cql_manager = Cequel::Migrations::Rails::CqlManager.new
+    cql_manager.drop_keyspace
   end
 
   desc "Migrate the cassandra store"

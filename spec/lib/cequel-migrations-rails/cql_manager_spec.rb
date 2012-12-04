@@ -51,8 +51,12 @@ describe Cequel::Migrations::Rails::CqlManager do
   end
 
   describe "#drop_keyspace" do
-    it "pending" do
-      pending
+    it "sends the cql comand to drop the keyspace from the cequel.yml" do
+      Cequel::Migrations::Rails::CqlManager.stub(:cequel_env_conf).and_return({ 'host' => 'some host', 'keyspace' => 'my_keyspace' })
+      db = mock('db')
+      CassandraCQL::Database.stub(:new).and_return(db)
+      db.should_receive(:execute).with('DROP KEYSPACE my_keyspace')
+      subject.drop_keyspace
     end
   end
 

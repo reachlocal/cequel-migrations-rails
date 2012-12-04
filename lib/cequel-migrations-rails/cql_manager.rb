@@ -20,6 +20,10 @@ module Cequel
           db.execute("USE #{self.class.cequel_env_conf['keyspace']}")
         end
 
+        def drop_keyspace
+          db.execute("DROP KEYSPACE #{self.class.cequel_env_conf['keyspace']}")
+        end
+
         private
 
         def build_create_keyspace_cmd(keyspace_name, strategy_class_name, strategy_options)
