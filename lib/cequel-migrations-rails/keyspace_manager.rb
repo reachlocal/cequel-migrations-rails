@@ -1,7 +1,7 @@
 module Cequel
   module Migrations
     module Rails
-      class CqlManager
+      class KeyspaceManager
         attr_reader :db
 
         def initialize
