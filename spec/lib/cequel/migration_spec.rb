@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Cequel::Migration do
+
   let(:migration_class) { class FooMigration < Cequel::Migration; end; FooMigration }
   let(:migration) { migration_class.new }
 
