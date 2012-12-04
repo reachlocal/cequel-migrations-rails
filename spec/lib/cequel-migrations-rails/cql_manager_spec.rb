@@ -60,12 +60,6 @@ describe Cequel::Migrations::Rails::CqlManager do
     end
   end
 
-  describe "#migrate" do
-    it "pending" do
-      pending
-    end
-  end
-
   describe "#rollback" do
     it "pending" do
       pending
