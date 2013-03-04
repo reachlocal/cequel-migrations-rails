@@ -125,6 +125,28 @@ At the moment we currently only provide the `execute` method. However, we plan
 to provide other helper functions like, `create_column_family`,
 `drop_column_family`, etc.
 
+### Example Migration
+
+Below is an example migration which creates a column family in the `up` method
+and drops the column family in the `down` method. Here we can see that the
+migration inherits from the `Cequel::Migrations` and see that we are using the
+execute method to execute CQL strings within the `up` and `down` methods as
+describe above.
+
+The migration exists at the following path,
+`cequel/migrate/20121130082818_create_visitor_events_column_family.rb`
+relative to the project root directory.
+
+    class CreateVisitorEventsColumnFamily < Cequel::Migration
+      def up
+        execute("CREATE COLUMNFAMILY visitor_events (visitor_id uuid PRIMARY KEY)")
+      end
+
+      def down
+        execute("DROP COLUMNFAMILY visitor_events")
+      end
+    end
+
 ## Contributing
 
 1. Fork it
