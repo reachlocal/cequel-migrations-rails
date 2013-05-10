@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["cyphactor@gmail.com"]
   gem.description   = %q{Cequel migration support for Rails.}
   gem.summary       = %q{A Rails plugin that provides migration support for Cequel.}
-  gem.homepage      = "http://github.com/cyphactor/cequel-migrations-rails"
+  gem.homepage      = "http://github.com/reachlocal/cequel-migrations-rails"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
