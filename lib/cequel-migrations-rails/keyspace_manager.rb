@@ -5,7 +5,7 @@ module Cequel
         attr_reader :db
 
         def initialize
-          @db = CassandraCQL::Database.new(self.class.cequel_env_conf['host'])
+          @db = CassandraCQL::Database.new(servers)
         end
 
         def self.cequel_env_conf
@@ -25,6 +25,10 @@ module Cequel
         end
 
         private
+        def servers
+          self.class.cequel_env_conf['hosts'] || self.class.cequel_env_conf['host']
+        end
+
 
         def build_create_keyspace_cmd(keyspace_name, strategy_class_name, strategy_options)
           strat_opts_array = []

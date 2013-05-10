@@ -52,4 +52,14 @@ namespace :cequel do
     Rake::Task["cequel:create"].invoke
     Rake::Task["cequel:migrate"].invoke
   end
+
+  desc "Launches cqlsh command and connects to cassandra server specified in your cequel.yml"
+  task :shell do
+    keyspace_manager = Cequel::Migrations::Rails::KeyspaceManager.new
+    server_parts = keyspace_manager.db.connection.current_server.to_s.split(':')
+    server_ip = server_parts[0]
+    server_port = server_parts[1]
+
+    system("sudo cqlsh #{server_ip} #{server_port}")
+  end
 end
