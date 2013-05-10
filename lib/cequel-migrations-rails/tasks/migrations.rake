@@ -60,6 +60,6 @@ namespace :cequel do
     server_ip = server_parts[0]
     server_port = server_parts[1]
 
-    system("sudo cqlsh #{server_ip} #{server_port}")
+    system("cqlsh -k #{Cequel::Migrations::Rails::KeyspaceManager.cequel_env_conf['keyspace']} #{server_ip} #{server_port}")
   end
 end
