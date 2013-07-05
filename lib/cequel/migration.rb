@@ -3,7 +3,7 @@ module Cequel
     attr_reader :db
 
     def initialize
-      @db = CassandraCQL::Database.new(servers, { :keyspace => self.class.cequel_env_conf['keyspace'] }, thrift_options)
+      @db = CassandraCQL::Database.new(server, { :keyspace => self.class.cequel_env_conf['keyspace'] }, thrift_options)
     end
 
     def execute(cql_string)
@@ -15,8 +15,12 @@ module Cequel
     end
 
   private
-    def servers
-      self.class.cequel_env_conf['hosts'] || self.class.cequel_env_conf['host']
+    def server
+      if self.class.cequel_env_conf['hosts']
+        return self.class.cequel_env_conf['hosts'].first
+      else
+        return self.class.cequel_env_conf['host']
+      end
     end
 
     def thrift_options
