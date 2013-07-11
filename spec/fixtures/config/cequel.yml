@@ -1,0 +1,16 @@
+development:
+  host: 'capture.services.dev:9160'
+  keyspace: capture_api_dev
+  strategy_class: SimpleStrategy
+  strategy_options:
+    replication_factor: 1
+  thrift:
+    connect_timeout: 5
+    timeout: 10
+test:
+  host: 'capture.services.dev:9160'
+  keyspace: capture_api_test
+  strategy_class: SimpleStrategy
+  strategy_options:
+    replication_factor: 1
+  thrift: ~

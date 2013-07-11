@@ -10,8 +10,20 @@ module Cequel
       db.execute(cql_string)
     end
 
+    def self.cequel_conf_path
+      File.join(::Rails.root, "config", "cequel.yml")
+    end
+
+    def self.cequel_conf_file
+      File.open(self.cequel_conf_path)
+    end
+
+    def self.cequel_conf
+      YAML::load(self.cequel_conf_file)
+    end
+
     def self.cequel_env_conf
-      YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[::Rails.env]
+      self.cequel_conf[::Rails.env]
     end
 
   private
@@ -25,7 +37,7 @@ module Cequel
 
     def thrift_options
       if self.class.cequel_env_conf['thrift']
-        return self.class.cequel_env_conf['thrift'].inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+        return self.class.cequel_env_conf['thrift'].inject({}) { |obj,(k,v)| obj[k.to_sym] = v; obj }
       else
         return {}
       end
