@@ -19,7 +19,7 @@ module Cequel
     end
 
     def self.cequel_conf
-      YAML::load(self.cequel_conf_file)
+      YAML::load(ERB.new(self.cequel_conf_file.read).result)
     end
 
     def self.cequel_env_conf

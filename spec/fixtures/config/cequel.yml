@@ -1,5 +1,8 @@
+<%
+  @cassandra_port = 9160
+%>
 development:
-  host: 'capture.services.dev:9160'
+  host: 'capture.services.dev:<%= @cassandra_port %>'
   keyspace: capture_api_dev
   strategy_class: SimpleStrategy
   strategy_options:
