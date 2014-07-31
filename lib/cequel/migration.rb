@@ -3,7 +3,8 @@ module Cequel
     attr_reader :db
 
     def initialize
-      @db = CassandraCQL::Database.new(server, { :keyspace => self.class.cequel_env_conf['keyspace'] }, thrift_options)
+      # Specify CQL Version 2.0
+      @db = CassandraCQL::Database.new(server, { :keyspace => self.class.cequel_env_conf['keyspace'], :cql_version => '2.0.0' }, thrift_options)
     end
 
     def execute(cql_string)
