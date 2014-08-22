@@ -5,11 +5,12 @@ module Cequel
         attr_reader :db
 
         def initialize
-          @db = CassandraCQL::Database.new(servers)
+          # Specify CQL Version 2.0
+          @db = CassandraCQL::Database.new(servers, :cql_version => '2.0.0')
         end
 
         def self.cequel_env_conf
-          YAML::load(File.open(File.join(::Rails.root,"config", "cequel.yml")))[::Rails.env]
+          YAML::load(ERB.new(File.read(File.join(::Rails.root,"config", "cequel.yml"))).result)[::Rails.env]
         end
 
         def create_keyspace

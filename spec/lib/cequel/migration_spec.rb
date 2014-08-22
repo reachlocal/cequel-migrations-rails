@@ -12,7 +12,7 @@ describe Cequel::Migration do
       migration
     end
   end
-  
+
   describe "#execute" do
     it "delegates to the cassandra-cql connection execute" do
       migration_class.stub(:cequel_env_conf).and_return({ 'keyspace' => 'test keyspace', 'host' => '123.123.123.123' })
@@ -44,8 +44,13 @@ describe Cequel::Migration do
     it "returns the hash result of YAML loading the cequel.yml conf file" do
       conf_file = stub
       conf_hash = stub
+      erb = stub
+      erb_result = stub
       migration_class.stub(:cequel_conf_file).and_return(conf_file)
-      ::YAML.should_receive(:load).with(conf_file).and_return(conf_hash)
+      conf_file.should_receive(:read).and_return(conf_file)
+      ERB.should_receive(:new).and_return(erb)
+      erb.should_receive(:result).and_return(erb_result)
+      ::YAML.should_receive(:load).with(erb_result).and_return(conf_hash)
       migration_class.cequel_conf.should eq(conf_hash)
     end
   end
