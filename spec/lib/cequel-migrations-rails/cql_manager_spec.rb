@@ -8,9 +8,19 @@ require 'spec_helper'
 
 describe Cequel::Migrations::Rails::KeyspaceManager do
   describe "#new" do
-    it "creates a CQL connection" do
+    it "creates a CQL connection for a single host" do
       Cequel::Migrations::Rails::KeyspaceManager.stub(:cequel_env_conf).and_return({ 'host' => 'some host' })
       CassandraCQL::Database.should_receive(:new).with('some host')
+      Cequel::Migrations::Rails::KeyspaceManager.new
+    end
+    it "creates a CQL connection for an array of hosts" do
+      Cequel::Migrations::Rails::KeyspaceManager.stub(:cequel_env_conf).and_return({ 'hosts' => ['some host', 'another host'] })
+      CassandraCQL::Database.should_receive(:new).with(['some host', 'another host'])
+      Cequel::Migrations::Rails::KeyspaceManager.new
+    end
+    it "creates a CQL connection for an array of hosts when the port is specified" do
+      Cequel::Migrations::Rails::KeyspaceManager.stub(:cequel_env_conf).and_return({ 'hosts' => ['host1', 'host2'], 'port' => 9140})
+      CassandraCQL::Database.should_receive(:new).with(['host1:9140', 'host2:9140'])
       Cequel::Migrations::Rails::KeyspaceManager.new
     end
   end
