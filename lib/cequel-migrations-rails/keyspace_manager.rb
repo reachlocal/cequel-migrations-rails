@@ -26,7 +26,11 @@ module Cequel
 
         private
         def servers
-          self.class.cequel_env_conf['hosts'] || self.class.cequel_env_conf['host']
+          if port = self.class.cequel_env_conf['port'] then
+            self.class.cequel_env_conf['hosts'].collect{|host| "#{host}:#{port}"} || "#{self.class.cequel_env_conf['host']}:#{port}"
+          else
+            self.class.cequel_env_conf['hosts'] || self.class.cequel_env_conf['host']
+          end
         end
 
 
